@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ club }} - All Matches</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="chat-container">
+        <h2>{{ club }} - Full Season Matches</h2>
+        <form method="POST" action="/">
+            <label>Select Club:</label>
+            <select name="club">
+                {% for c in clubs %}
+                    <option value="{{ c }}" {% if c == club %}selected{% endif %}>{{ c }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit">Show Matches</button>
+        </form>
+        <br>
+        {% if fixtures %}
+            <table class="match-table" style="width:100%; border-collapse:collapse; margin-top:20px;">
+                <tr>
+                    <th>Date & Time</th>
+                    <th>Club 1</th>
+                    <th>vs</th>
+                    <th>Club 2</th>
+                    <th>Competition</th>
+                </tr>
+                {% for match in fixtures %}
+                <tr class="match-row" style="background:#fff;">
+                    <td>{{ match.date_time }}{% if match.time and match.time != 'TBD' %} - {{ match.time }}{% endif %}</td>
+                    <td>{{ match.club1 }}</td>
+                    <td>vs</td>
+                    <td>{{ match.club2 }}</td>
+                    <td class="competition" style="font-weight:bold; color:#2a7ae2;">{{ match.competition }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No matches found for this club.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
